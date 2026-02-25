@@ -138,11 +138,13 @@ function animate() {
   // 1. Find current active token
   let activeIndex = -1;
   // Optimize: search around currentTokenIndex if playing forward
-  for (let i = 0; i < alignmentData.length; i++) {
-    const item = alignmentData[i];
-    if (time >= item.start && time < item.end) {
-      activeIndex = i;
-      break;
+  if (alignmentData.length > 0) {
+    for (let i = 0; i < alignmentData.length; i++) {
+      const item = alignmentData[i];
+      if (time >= item.start && time < item.end) {
+        activeIndex = i;
+        break;
+      }
     }
   }
 
@@ -154,6 +156,17 @@ function animate() {
     const displayText = item.token || '';
     setLip(lipId, displayText.toUpperCase());
     lastActiveLipTime = time;
+  } else if (alignmentData.length === 0) {
+    // RANDOM LIP SYNC FALLBACK
+    // Change lip every 100-200ms
+    const timeSinceLastActive = time - lastActiveLipTime;
+    if (timeSinceLastActive > 0.15) { // ~150ms
+      // Pick a random vowel or consonant lip shape (exclude neutral/smirk/sad)
+      const randomLips = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 19, 20];
+      const randomLipId = randomLips[Math.floor(Math.random() * randomLips.length)];
+      setLip(randomLipId, "♪ ~");
+      lastActiveLipTime = time;
+    }
   } else {
     // Grace period: don't snap to neutral immediately between close tokens
     // Check if a next token is coming soon
@@ -512,10 +525,13 @@ async function togglePlay() {
   if (!audioPlayer.src) return;
 
   if (isPlaying) {
-    audioPlayer.pause();
-  } else {
-    await audioPlayer.play();
+    // Play -> Stop -> Play logic requested by user
+    stopPlayback();
   }
+
+  // start playing
+  audioPlayer.currentTime = 0; // reset to beginning for play
+  await audioPlayer.play();
 }
 
 function stopPlayback() {
