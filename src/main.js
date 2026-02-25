@@ -1,3 +1,6 @@
+// Base URL for assets (works with GitHub Pages subdirectory)
+const BASE = import.meta.env.BASE_URL;
+
 // ===== PHONEME MAPPING =====
 // Map Vietnamese characters to lip image numbers based on the reference chart
 const PHONEME_MAP = {
@@ -85,7 +88,7 @@ const NEUTRAL_GRACE_MS = 0.08; // 80ms grace period before returning to neutral
 const lipImages = {};
 for (let i = 1; i <= 20; i++) {
   const img = new Image();
-  img.src = `/assets/lips/${i}.png`;
+  img.src = `${BASE}assets/lips/${i}.png`;
   lipImages[i] = img;
 }
 
@@ -93,7 +96,7 @@ for (let i = 1; i <= 20; i++) {
 function setLip(lipId) {
   if (lipId === currentLipId) return;
   currentLipId = lipId;
-  lipOverlay.src = `/assets/lips/${lipId}.png`;
+  lipOverlay.src = `${BASE}assets/lips/${lipId}.png`;
   phonemeValue.textContent = PHONEME_MAP[lipId].label;
 
   // Update chart active state
@@ -246,7 +249,7 @@ function buildChart() {
     item.dataset.lipId = id;
     if (id === NEUTRAL_LIP) item.classList.add('active');
     item.innerHTML = `
-      <img src="/assets/lips/${id}.png" alt="${PHONEME_MAP[id].label}" />
+      <img src="${BASE}assets/lips/${id}.png" alt="${PHONEME_MAP[id].label}" />
       <span>${PHONEME_MAP[id].label}</span>
     `;
     // Click to preview
@@ -258,11 +261,11 @@ function buildChart() {
 // ===== Startup Defaults & Load Logic =====
 async function loadDefaultFiles() {
   try {
-    const audioRes = await fetch('/audio-1.wav');
+    const audioRes = await fetch(`${BASE}audio-1.wav`);
     if (!audioRes.ok) throw new Error("Audio 404");
     const audioBlob = await audioRes.blob();
 
-    const jsonRes = await fetch('/alignment_audio-1.json');
+    const jsonRes = await fetch(`${BASE}alignment_audio-1.json`);
     if (!jsonRes.ok) throw new Error("JSON 404");
     const jsonData = await jsonRes.json();
 
