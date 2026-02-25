@@ -93,11 +93,12 @@ for (let i = 1; i <= 20; i++) {
 }
 
 // ===== Set Lip =====
-function setLip(lipId) {
-  if (lipId === currentLipId) return;
+function setLip(lipId, tokenText) {
+  if (lipId === currentLipId && !tokenText) return;
   currentLipId = lipId;
   lipOverlay.src = `${BASE}assets/lips/${lipId}.png`;
-  phonemeValue.textContent = PHONEME_MAP[lipId].label;
+  // Show current spoken token if available, otherwise show lip group label
+  phonemeValue.textContent = tokenText || PHONEME_MAP[lipId].label;
 
   // Update chart active state
   document.querySelectorAll('.chart-item').forEach(item => {
@@ -148,9 +149,10 @@ function animate() {
   // 2. Set Lip State
   if (activeIndex !== -1) {
     const item = alignmentData[activeIndex];
-    // Use pre-computed lipId from smoothAlignment, or compute on the fly
     const lipId = item._lipId || getLipIdForToken(item.token);
-    setLip(lipId);
+    // Show the token text (word being spoken)
+    const displayText = item.token || '';
+    setLip(lipId, displayText.toUpperCase());
     lastActiveLipTime = time;
   } else {
     // Grace period: don't snap to neutral immediately between close tokens
@@ -279,25 +281,40 @@ async function loadDefaultFiles() {
 function rescaleAlignment() {
   if (alignmentData.length === 0 || !audioPlayer.duration) return;
 
-  // 1. Strip trailing empty/padding tokens first
-  while (alignmentData.length > 0 && !alignmentData[alignmentData.length - 1].token.trim()) {
-    alignmentData.pop();
-  }
-  if (alignmentData.length === 0) return;
+  // 1. Find the ORIGINAL end of the json (including padding tokens)
+  // TTS models usually output json lengths that map proportionally to the generated audio
+  const originalJsonEnd = alignmentData[alignmentData.length - 1].end;
+  if (originalJsonEnd <= 0) return;
 
-  // 2. Find the end of actual speech content
-  const jsonEnd = alignmentData[alignmentData.length - 1].end;
-  if (jsonEnd <= 0) return;
-
-  // 3. Rescale if there's a significant difference
-  if (Math.abs(jsonEnd - audioPlayer.duration) > 0.1) {
-    const scale = audioPlayer.duration / jsonEnd;
-    console.log(`Rescaling JSON: ${jsonEnd.toFixed(3)}s → ${audioPlayer.duration.toFixed(3)}s (x${scale.toFixed(2)})`);
+  // 2. Rescale all timestamps proportionally to audio duration
+  if (Math.abs(originalJsonEnd - audioPlayer.duration) > 0.1) {
+    const scale = audioPlayer.duration / originalJsonEnd;
+    console.log(`Rescaling JSON: ${originalJsonEnd.toFixed(3)}s → ${audioPlayer.duration.toFixed(3)}s (x${scale.toFixed(2)})`);
     alignmentData = alignmentData.map(item => ({
       ...item,
       start: item.start * scale,
       end: item.end * scale,
     }));
+  }
+
+  // 3. Strip metadata block [lang:vi] from beginning
+  if (alignmentData.length > 0 && alignmentData[0].token === '[') {
+    let metaEnd = 0;
+    for (let i = 0; i < alignmentData.length; i++) {
+      if (alignmentData[i].token === ']') {
+        metaEnd = i + 1;
+        break;
+      }
+    }
+    if (metaEnd > 0) {
+      alignmentData = alignmentData.slice(metaEnd);
+      console.log(`Stripped metadata: removed ${metaEnd} tokens`);
+    }
+  }
+
+  // 4. Strip trailing empty/padding tokens
+  while (alignmentData.length > 0 && !alignmentData[alignmentData.length - 1].token.trim()) {
+    alignmentData.pop();
   }
 }
 
@@ -307,11 +324,23 @@ function smoothAlignment() {
 
   const vowels = 'aăâeêioôơuưyáàảãạắằẳẵặấầẩẫậéèẻẽẹếềểễệíìỉĩịóòỏõọốồổỗộớờởỡợúùủũụứừửữựýỳỷỹỵ';
 
+  // 0. Strip metadata block [lang:vi] from beginning
+  let startIdx = 0;
+  if (alignmentData.length > 0 && alignmentData[0].token === '[') {
+    for (let i = 0; i < alignmentData.length; i++) {
+      if (alignmentData[i].token === ']') {
+        startIdx = i + 1;
+        break;
+      }
+    }
+  }
+  const cleanData = alignmentData.slice(startIdx);
+
   // 1. Split tokens into syllable groups (separated by spaces/punctuation/empty)
   const syllables = [];
   let currentSyl = [];
 
-  for (const item of alignmentData) {
+  for (const item of cleanData) {
     const t = item.token.trim();
     if (!t || t === ' ' || /^[^a-zA-ZÀ-ỹ]$/.test(t)) {
       if (currentSyl.length > 0) {
@@ -365,17 +394,27 @@ function smoothAlignment() {
       vowelLipId = onsetLipId;
     }
 
-    // Create sub-segments based on syllable duration
-    if (sylDur < 0.08) {
-      // Very short syllable: just use the vowel
+    // Create sub-segments: onset(20%) → vowel(50%) → coda(30%)
+    const hasOnset = onsetLipId !== NEUTRAL_LIP && onsetLipId !== vowelLipId;
+    const hasCoda = codaLipId !== NEUTRAL_LIP && codaLipId !== vowelLipId;
+
+    if (sylDur < 0.06) {
       segments.push({ token: fullToken, start: sylStart, end: sylEnd, _lipId: vowelLipId });
-    } else if (onsetLipId !== NEUTRAL_LIP && onsetLipId !== vowelLipId) {
-      // Has distinct consonant onset: onset(25%) → vowel(75%)
+    } else if (hasOnset && hasCoda) {
+      const onsetEnd = sylStart + sylDur * 0.20;
+      const codaStart = sylEnd - sylDur * 0.25;
+      segments.push({ token: '', start: sylStart, end: onsetEnd, _lipId: onsetLipId });
+      segments.push({ token: fullToken, start: onsetEnd, end: codaStart, _lipId: vowelLipId });
+      segments.push({ token: '', start: codaStart, end: sylEnd, _lipId: codaLipId });
+    } else if (hasOnset) {
       const onsetEnd = sylStart + sylDur * 0.25;
-      segments.push({ token: fullToken[0], start: sylStart, end: onsetEnd, _lipId: onsetLipId });
-      segments.push({ token: fullToken.slice(1), start: onsetEnd, end: sylEnd, _lipId: vowelLipId });
+      segments.push({ token: '', start: sylStart, end: onsetEnd, _lipId: onsetLipId });
+      segments.push({ token: fullToken, start: onsetEnd, end: sylEnd, _lipId: vowelLipId });
+    } else if (hasCoda) {
+      const codaStart = sylEnd - sylDur * 0.30;
+      segments.push({ token: fullToken, start: sylStart, end: codaStart, _lipId: vowelLipId });
+      segments.push({ token: '', start: codaStart, end: sylEnd, _lipId: codaLipId });
     } else {
-      // No distinct onset: just vowel for the whole syllable
       segments.push({ token: fullToken, start: sylStart, end: sylEnd, _lipId: vowelLipId });
     }
   }
@@ -493,6 +532,24 @@ function updatePlayButton() {
   playIcon.classList.toggle('hidden', isPlaying);
   pauseIcon.classList.toggle('hidden', !isPlaying);
 }
+
+// ===== Speed Control =====
+const SPEEDS = [0.25, 0.5, 0.75, 1];
+let speedIndex = 3; // default 1x
+const btnSpeed = document.getElementById('btnSpeed');
+const speedLabel = document.getElementById('speedLabel');
+
+function cycleSpeed() {
+  speedIndex = (speedIndex + 1) % SPEEDS.length;
+  const rate = SPEEDS[speedIndex];
+  audioPlayer.playbackRate = rate;
+  speedLabel.textContent = `${rate}x`;
+  // Highlight when slow
+  btnSpeed.style.borderColor = rate < 1 ? 'var(--accent)' : 'var(--glass-border)';
+  btnSpeed.style.color = rate < 1 ? 'var(--accent)' : 'var(--text-primary)';
+}
+
+btnSpeed.addEventListener('click', cycleSpeed);
 
 // ===== Event Listeners =====
 
