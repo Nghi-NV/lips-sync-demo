@@ -82,6 +82,26 @@ let alignmentData = [];
 let lastActiveLipTime = 0; // Track when lip was last active for debounce
 const NEUTRAL_GRACE_MS = 0.08; // 80ms grace period before returning to neutral
 
+// ===== Web Audio API for Real-time Fallback =====
+let audioContext = null;
+let analyser = null;
+let dataArray = null;
+let sourceNode = null;
+
+function initAudioContext() {
+  if (!audioContext) {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = audioContext.createAnalyser();
+    analyser.fftSize = 256;
+    const bufferLength = analyser.frequencyBinCount;
+    dataArray = new Uint8Array(bufferLength);
+
+    sourceNode = audioContext.createMediaElementSource(audioPlayer);
+    sourceNode.connect(analyser);
+    analyser.connect(audioContext.destination);
+  }
+}
+
 
 
 // ===== Preload all lip images =====
@@ -156,15 +176,44 @@ function animate() {
     const displayText = item.token || '';
     setLip(lipId, displayText.toUpperCase());
     lastActiveLipTime = time;
-  } else if (alignmentData.length === 0) {
-    // RANDOM LIP SYNC FALLBACK
-    // Change lip every 100-200ms
+  } else if (alignmentData.length === 0 && analyser && isPlaying) {
+    // REAL-TIME AUDIO ANALYSIS FALLBACK (Volume based)
+    analyser.getByteFrequencyData(dataArray);
+    let sum = 0;
+    for (let i = 0; i < dataArray.length; i++) {
+      sum += dataArray[i];
+    }
+    const averageVolume = sum / dataArray.length; // Range 0 - 255
+
+    // Map volume to standard lip shapes based on openness
+    // Neutral (17), Slight open (7 - E/I), Medium open (12 - O), Wide open (1 - A)
+    let dynamicLipId = NEUTRAL_LIP;
+
+    if (averageVolume > 70) {
+      dynamicLipId = 1; // Wide open (A)
+      phonemeValue.textContent = "🔊 (A)";
+    } else if (averageVolume > 40) {
+      dynamicLipId = 12; // Medium open (O)
+      phonemeValue.textContent = "🔉 (O)";
+    } else if (averageVolume > 15) {
+      dynamicLipId = 7; // Slightly open (E/I)
+      phonemeValue.textContent = "🔈 (E)";
+    } else if (averageVolume > 5) {
+      dynamicLipId = 6; // Closed but active (M/B/P)
+      phonemeValue.textContent = "🔇 (M)";
+    } else {
+      dynamicLipId = NEUTRAL_LIP;
+      phonemeValue.textContent = "Mute";
+    }
+
+    // Debounce rapid fluttering by applying a tiny grace period
     const timeSinceLastActive = time - lastActiveLipTime;
-    if (timeSinceLastActive > 0.15) { // ~150ms
-      // Pick a random vowel or consonant lip shape (exclude neutral/smirk/sad)
-      const randomLips = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 19, 20];
-      const randomLipId = randomLips[Math.floor(Math.random() * randomLips.length)];
-      setLip(randomLipId, "♪ ~");
+    if (dynamicLipId !== currentLipId && timeSinceLastActive > 0.05) {
+      if (dynamicLipId !== NEUTRAL_LIP) {
+        setLip(dynamicLipId, phonemeValue.textContent);
+      } else {
+        setLip(NEUTRAL_LIP);
+      }
       lastActiveLipTime = time;
     }
   } else {
@@ -191,7 +240,7 @@ function animate() {
   }
 
   // Scroll timeline to center active token
-  if (audioPlayer.duration > 0) {
+  if (audioPlayer.duration > 0 && alignmentData.length > 0) {
     const pct = time / audioPlayer.duration;
     // 100% of tokens width corresponds to audio duration
     const containerWidth = timelineTokens.parentElement.offsetWidth;
@@ -218,7 +267,11 @@ function buildTimeline() {
   // Ensure we have at least container width, up to a scrollable width
   const pixelsPerSecond = Math.max(containerWidth / totalDuration, 300);
 
-  timelineTokens.style.width = (totalDuration * pixelsPerSecond) + 'px';
+  if (alignmentData.length > 0) {
+    timelineTokens.style.width = (totalDuration * pixelsPerSecond) + 'px';
+  } else {
+    timelineTokens.style.width = '100%';
+  }
 
   alignmentData.forEach(item => {
     const span = document.createElement('span');
@@ -525,7 +578,6 @@ async function togglePlay() {
   if (!audioPlayer.src) return;
 
   if (isPlaying) {
-    // Play -> Stop -> Play logic requested by user
     stopPlayback();
   }
 
@@ -624,6 +676,12 @@ btnUploadNew.addEventListener('click', () => {
 
 // Audio events
 audioPlayer.addEventListener('play', () => {
+  // Initialize Web Audio API on first user interaction to bypass autoplay policies
+  initAudioContext();
+  if (audioContext && audioContext.state === 'suspended') {
+    audioContext.resume();
+  }
+
   isPlaying = true;
   updatePlayButton();
   characterContainer.classList.add('speaking');
