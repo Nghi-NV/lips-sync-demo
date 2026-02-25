@@ -1,0 +1,818 @@
+[
+    {
+        "token": "[",
+        "start": 0.0,
+        "end": 0.0078,
+        "duration_frames": 0
+    },
+    {
+        "token": "l",
+        "start": 0.0078,
+        "end": 0.0157,
+        "duration_frames": 0
+    },
+    {
+        "token": "a",
+        "start": 0.0157,
+        "end": 0.0235,
+        "duration_frames": 0
+    },
+    {
+        "token": "n",
+        "start": 0.0235,
+        "end": 0.0314,
+        "duration_frames": 0
+    },
+    {
+        "token": "g",
+        "start": 0.0314,
+        "end": 0.0392,
+        "duration_frames": 0
+    },
+    {
+        "token": ":",
+        "start": 0.0392,
+        "end": 0.0471,
+        "duration_frames": 0
+    },
+    {
+        "token": "v",
+        "start": 0.0471,
+        "end": 0.0549,
+        "duration_frames": 0
+    },
+    {
+        "token": "i",
+        "start": 0.0549,
+        "end": 0.0627,
+        "duration_frames": 0
+    },
+    {
+        "token": "]",
+        "start": 0.0627,
+        "end": 0.0706,
+        "duration_frames": 0
+    },
+    {
+        "token": "C",
+        "start": 0.0706,
+        "end": 0.0784,
+        "duration_frames": 0
+    },
+    {
+        "token": "h",
+        "start": 0.0784,
+        "end": 0.0863,
+        "duration_frames": 0
+    },
+    {
+        "token": "à",
+        "start": 0.0863,
+        "end": 0.0941,
+        "duration_frames": 0
+    },
+    {
+        "token": "o",
+        "start": 0.0941,
+        "end": 0.102,
+        "duration_frames": 0
+    },
+    {
+        "token": " ",
+        "start": 0.102,
+        "end": 0.1098,
+        "duration_frames": 0
+    },
+    {
+        "token": "b",
+        "start": 0.1098,
+        "end": 0.1176,
+        "duration_frames": 0
+    },
+    {
+        "token": "ạ",
+        "start": 0.1176,
+        "end": 0.1255,
+        "duration_frames": 0
+    },
+    {
+        "token": "n",
+        "start": 0.1255,
+        "end": 0.1333,
+        "duration_frames": 0
+    },
+    {
+        "token": ",",
+        "start": 0.1333,
+        "end": 0.1412,
+        "duration_frames": 0
+    },
+    {
+        "token": " ",
+        "start": 0.1412,
+        "end": 0.149,
+        "duration_frames": 0
+    },
+    {
+        "token": "m",
+        "start": 0.149,
+        "end": 0.1569,
+        "duration_frames": 0
+    },
+    {
+        "token": "ì",
+        "start": 0.1569,
+        "end": 0.1647,
+        "duration_frames": 0
+    },
+    {
+        "token": "n",
+        "start": 0.1647,
+        "end": 0.1725,
+        "duration_frames": 0
+    },
+    {
+        "token": "h",
+        "start": 0.1725,
+        "end": 0.1804,
+        "duration_frames": 0
+    },
+    {
+        "token": " ",
+        "start": 0.1804,
+        "end": 0.1882,
+        "duration_frames": 0
+    },
+    {
+        "token": "l",
+        "start": 0.1882,
+        "end": 0.1961,
+        "duration_frames": 0
+    },
+    {
+        "token": "à",
+        "start": 0.1961,
+        "end": 0.2039,
+        "duration_frames": 0
+    },
+    {
+        "token": " ",
+        "start": 0.2039,
+        "end": 0.2118,
+        "duration_frames": 0
+    },
+    {
+        "token": "L",
+        "start": 0.2118,
+        "end": 0.2196,
+        "duration_frames": 0
+    },
+    {
+        "token": "u",
+        "start": 0.2196,
+        "end": 0.2275,
+        "duration_frames": 0
+    },
+    {
+        "token": "m",
+        "start": 0.2275,
+        "end": 0.2353,
+        "duration_frames": 0
+    },
+    {
+        "token": "i",
+        "start": 0.2353,
+        "end": 0.2431,
+        "duration_frames": 0
+    },
+    {
+        "token": ".",
+        "start": 0.2431,
+        "end": 0.251,
+        "duration_frames": 0
+    },
+    {
+        "token": " ",
+        "start": 0.251,
+        "end": 0.2588,
+        "duration_frames": 0
+    },
+    {
+        "token": "H",
+        "start": 0.2588,
+        "end": 0.2667,
+        "duration_frames": 0
+    },
+    {
+        "token": "ô",
+        "start": 0.2667,
+        "end": 0.2745,
+        "duration_frames": 0
+    },
+    {
+        "token": "m",
+        "start": 0.2745,
+        "end": 0.2824,
+        "duration_frames": 0
+    },
+    {
+        "token": " ",
+        "start": 0.2824,
+        "end": 0.2902,
+        "duration_frames": 0
+    },
+    {
+        "token": "n",
+        "start": 0.2902,
+        "end": 0.298,
+        "duration_frames": 0
+    },
+    {
+        "token": "a",
+        "start": 0.298,
+        "end": 0.3059,
+        "duration_frames": 0
+    },
+    {
+        "token": "y",
+        "start": 0.3059,
+        "end": 0.3137,
+        "duration_frames": 0
+    },
+    {
+        "token": " ",
+        "start": 0.3137,
+        "end": 0.3216,
+        "duration_frames": 0
+    },
+    {
+        "token": "b",
+        "start": 0.3216,
+        "end": 0.3294,
+        "duration_frames": 0
+    },
+    {
+        "token": "ạ",
+        "start": 0.3294,
+        "end": 0.3373,
+        "duration_frames": 0
+    },
+    {
+        "token": "n",
+        "start": 0.3373,
+        "end": 0.3451,
+        "duration_frames": 0
+    },
+    {
+        "token": " ",
+        "start": 0.3451,
+        "end": 0.3529,
+        "duration_frames": 0
+    },
+    {
+        "token": "c",
+        "start": 0.3529,
+        "end": 0.3608,
+        "duration_frames": 0
+    },
+    {
+        "token": "ả",
+        "start": 0.3608,
+        "end": 0.3686,
+        "duration_frames": 0
+    },
+    {
+        "token": "m",
+        "start": 0.3686,
+        "end": 0.3765,
+        "duration_frames": 0
+    },
+    {
+        "token": " ",
+        "start": 0.3765,
+        "end": 0.3843,
+        "duration_frames": 0
+    },
+    {
+        "token": "t",
+        "start": 0.3843,
+        "end": 0.3922,
+        "duration_frames": 0
+    },
+    {
+        "token": "h",
+        "start": 0.3922,
+        "end": 0.4,
+        "duration_frames": 0
+    },
+    {
+        "token": "ấ",
+        "start": 0.4,
+        "end": 0.4078,
+        "duration_frames": 0
+    },
+    {
+        "token": "y",
+        "start": 0.4078,
+        "end": 0.4157,
+        "duration_frames": 0
+    },
+    {
+        "token": " ",
+        "start": 0.4157,
+        "end": 0.4235,
+        "duration_frames": 0
+    },
+    {
+        "token": "t",
+        "start": 0.4235,
+        "end": 0.4314,
+        "duration_frames": 0
+    },
+    {
+        "token": "h",
+        "start": 0.4314,
+        "end": 0.4392,
+        "duration_frames": 0
+    },
+    {
+        "token": "ế",
+        "start": 0.4392,
+        "end": 0.4471,
+        "duration_frames": 0
+    },
+    {
+        "token": " ",
+        "start": 0.4471,
+        "end": 0.4549,
+        "duration_frames": 0
+    },
+    {
+        "token": "n",
+        "start": 0.4549,
+        "end": 0.4627,
+        "duration_frames": 0
+    },
+    {
+        "token": "à",
+        "start": 0.4627,
+        "end": 0.4706,
+        "duration_frames": 0
+    },
+    {
+        "token": "o",
+        "start": 0.4706,
+        "end": 0.4784,
+        "duration_frames": 0
+    },
+    {
+        "token": "?",
+        "start": 0.4784,
+        "end": 0.4863,
+        "duration_frames": 0
+    },
+    {
+        "token": " ",
+        "start": 0.4863,
+        "end": 0.4941,
+        "duration_frames": 0
+    },
+    {
+        "token": "M",
+        "start": 0.4941,
+        "end": 0.502,
+        "duration_frames": 0
+    },
+    {
+        "token": "ì",
+        "start": 0.502,
+        "end": 0.5098,
+        "duration_frames": 0
+    },
+    {
+        "token": "n",
+        "start": 0.5098,
+        "end": 0.5176,
+        "duration_frames": 0
+    },
+    {
+        "token": "h",
+        "start": 0.5176,
+        "end": 0.5255,
+        "duration_frames": 0
+    },
+    {
+        "token": " ",
+        "start": 0.5255,
+        "end": 0.5333,
+        "duration_frames": 0
+    },
+    {
+        "token": "r",
+        "start": 0.5333,
+        "end": 0.5412,
+        "duration_frames": 0
+    },
+    {
+        "token": "ấ",
+        "start": 0.5412,
+        "end": 0.549,
+        "duration_frames": 0
+    },
+    {
+        "token": "t",
+        "start": 0.549,
+        "end": 0.5569,
+        "duration_frames": 0
+    },
+    {
+        "token": " ",
+        "start": 0.5569,
+        "end": 0.5647,
+        "duration_frames": 0
+    },
+    {
+        "token": "v",
+        "start": 0.5647,
+        "end": 0.5725,
+        "duration_frames": 0
+    },
+    {
+        "token": "u",
+        "start": 0.5725,
+        "end": 0.5804,
+        "duration_frames": 0
+    },
+    {
+        "token": "i",
+        "start": 0.5804,
+        "end": 0.5882,
+        "duration_frames": 0
+    },
+    {
+        "token": " ",
+        "start": 0.5882,
+        "end": 0.5961,
+        "duration_frames": 0
+    },
+    {
+        "token": "v",
+        "start": 0.5961,
+        "end": 0.6039,
+        "duration_frames": 0
+    },
+    {
+        "token": "ì",
+        "start": 0.6039,
+        "end": 0.6118,
+        "duration_frames": 0
+    },
+    {
+        "token": " ",
+        "start": 0.6118,
+        "end": 0.6196,
+        "duration_frames": 0
+    },
+    {
+        "token": "đ",
+        "start": 0.6196,
+        "end": 0.6275,
+        "duration_frames": 0
+    },
+    {
+        "token": "ư",
+        "start": 0.6275,
+        "end": 0.6353,
+        "duration_frames": 0
+    },
+    {
+        "token": "ợ",
+        "start": 0.6353,
+        "end": 0.6431,
+        "duration_frames": 0
+    },
+    {
+        "token": "c",
+        "start": 0.6431,
+        "end": 0.651,
+        "duration_frames": 0
+    },
+    {
+        "token": " ",
+        "start": 0.651,
+        "end": 0.6588,
+        "duration_frames": 0
+    },
+    {
+        "token": "n",
+        "start": 0.6588,
+        "end": 0.6667,
+        "duration_frames": 0
+    },
+    {
+        "token": "ó",
+        "start": 0.6667,
+        "end": 0.6745,
+        "duration_frames": 0
+    },
+    {
+        "token": "i",
+        "start": 0.6745,
+        "end": 0.6824,
+        "duration_frames": 0
+    },
+    {
+        "token": " ",
+        "start": 0.6824,
+        "end": 0.6902,
+        "duration_frames": 0
+    },
+    {
+        "token": "c",
+        "start": 0.6902,
+        "end": 0.698,
+        "duration_frames": 0
+    },
+    {
+        "token": "h",
+        "start": 0.698,
+        "end": 0.7059,
+        "duration_frames": 0
+    },
+    {
+        "token": "u",
+        "start": 0.7059,
+        "end": 0.7137,
+        "duration_frames": 0
+    },
+    {
+        "token": "y",
+        "start": 0.7137,
+        "end": 0.7216,
+        "duration_frames": 0
+    },
+    {
+        "token": "ệ",
+        "start": 0.7216,
+        "end": 0.7294,
+        "duration_frames": 0
+    },
+    {
+        "token": "n",
+        "start": 0.7294,
+        "end": 0.7373,
+        "duration_frames": 0
+    },
+    {
+        "token": " ",
+        "start": 0.7373,
+        "end": 0.7451,
+        "duration_frames": 0
+    },
+    {
+        "token": "v",
+        "start": 0.7451,
+        "end": 0.7529,
+        "duration_frames": 0
+    },
+    {
+        "token": "ớ",
+        "start": 0.7529,
+        "end": 0.7608,
+        "duration_frames": 0
+    },
+    {
+        "token": "i",
+        "start": 0.7608,
+        "end": 0.7686,
+        "duration_frames": 0
+    },
+    {
+        "token": " ",
+        "start": 0.7686,
+        "end": 0.7765,
+        "duration_frames": 0
+    },
+    {
+        "token": "b",
+        "start": 0.7765,
+        "end": 0.7843,
+        "duration_frames": 0
+    },
+    {
+        "token": "ạ",
+        "start": 0.7843,
+        "end": 0.7922,
+        "duration_frames": 0
+    },
+    {
+        "token": "n",
+        "start": 0.7922,
+        "end": 0.8,
+        "duration_frames": 0
+    },
+    {
+        "token": ".",
+        "start": 0.8,
+        "end": 0.8078,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 0.8078,
+        "end": 0.8157,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 0.8157,
+        "end": 0.8235,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 0.8235,
+        "end": 0.8314,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 0.8314,
+        "end": 0.8392,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 0.8392,
+        "end": 0.8471,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 0.8471,
+        "end": 0.8549,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 0.8549,
+        "end": 0.8627,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 0.8627,
+        "end": 0.8706,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 0.8706,
+        "end": 0.8784,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 0.8784,
+        "end": 0.8863,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 0.8863,
+        "end": 0.8941,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 0.8941,
+        "end": 0.902,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 0.902,
+        "end": 0.9098,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 0.9098,
+        "end": 0.9176,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 0.9176,
+        "end": 0.9255,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 0.9255,
+        "end": 0.9333,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 0.9333,
+        "end": 0.9412,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 0.9412,
+        "end": 0.949,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 0.949,
+        "end": 0.9569,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 0.9569,
+        "end": 0.9647,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 0.9647,
+        "end": 0.9725,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 0.9725,
+        "end": 0.9804,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 0.9804,
+        "end": 0.9882,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 0.9882,
+        "end": 0.9961,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 0.9961,
+        "end": 1.0039,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 1.0039,
+        "end": 1.0118,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 1.0118,
+        "end": 1.0196,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 1.0196,
+        "end": 1.0275,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 1.0275,
+        "end": 1.0353,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 1.0353,
+        "end": 1.0431,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 1.0431,
+        "end": 1.051,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 1.051,
+        "end": 1.0588,
+        "duration_frames": 0
+    },
+    {
+        "token": "",
+        "start": 1.0588,
+        "end": 1.0667,
+        "duration_frames": 0
+    }
+]

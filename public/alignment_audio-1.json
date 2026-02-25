@@ -1,0 +1,344 @@
+[
+    {
+        "token": "[",
+        "start": 0.0,
+        "end": 0.0187,
+        "duration_frames": 1
+    },
+    {
+        "token": "l",
+        "start": 0.0187,
+        "end": 0.0374,
+        "duration_frames": 1
+    },
+    {
+        "token": "a",
+        "start": 0.0374,
+        "end": 0.0561,
+        "duration_frames": 1
+    },
+    {
+        "token": "n",
+        "start": 0.0561,
+        "end": 0.0749,
+        "duration_frames": 1
+    },
+    {
+        "token": "g",
+        "start": 0.0749,
+        "end": 0.0936,
+        "duration_frames": 1
+    },
+    {
+        "token": ":",
+        "start": 0.0936,
+        "end": 0.1123,
+        "duration_frames": 1
+    },
+    {
+        "token": "v",
+        "start": 0.1123,
+        "end": 0.131,
+        "duration_frames": 1
+    },
+    {
+        "token": "i",
+        "start": 0.131,
+        "end": 0.1497,
+        "duration_frames": 1
+    },
+    {
+        "token": "]",
+        "start": 0.1497,
+        "end": 0.1684,
+        "duration_frames": 1
+    },
+    {
+        "token": "X",
+        "start": 0.1684,
+        "end": 0.1871,
+        "duration_frames": 1
+    },
+    {
+        "token": "i",
+        "start": 0.1871,
+        "end": 0.2058,
+        "duration_frames": 1
+    },
+    {
+        "token": "n",
+        "start": 0.2058,
+        "end": 0.2246,
+        "duration_frames": 1
+    },
+    {
+        "token": " ",
+        "start": 0.2246,
+        "end": 0.2433,
+        "duration_frames": 1
+    },
+    {
+        "token": "c",
+        "start": 0.2433,
+        "end": 0.262,
+        "duration_frames": 1
+    },
+    {
+        "token": "h",
+        "start": 0.262,
+        "end": 0.2807,
+        "duration_frames": 1
+    },
+    {
+        "token": "à",
+        "start": 0.2807,
+        "end": 0.2994,
+        "duration_frames": 1
+    },
+    {
+        "token": "o",
+        "start": 0.2994,
+        "end": 0.3181,
+        "duration_frames": 1
+    },
+    {
+        "token": ",",
+        "start": 0.3181,
+        "end": 0.3368,
+        "duration_frames": 1
+    },
+    {
+        "token": " ",
+        "start": 0.3368,
+        "end": 0.3556,
+        "duration_frames": 1
+    },
+    {
+        "token": "c",
+        "start": 0.3556,
+        "end": 0.3743,
+        "duration_frames": 1
+    },
+    {
+        "token": "h",
+        "start": 0.3743,
+        "end": 0.393,
+        "duration_frames": 1
+    },
+    {
+        "token": "ú",
+        "start": 0.393,
+        "end": 0.4117,
+        "duration_frames": 1
+    },
+    {
+        "token": "c",
+        "start": 0.4117,
+        "end": 0.4304,
+        "duration_frames": 1
+    },
+    {
+        "token": " ",
+        "start": 0.4304,
+        "end": 0.4491,
+        "duration_frames": 1
+    },
+    {
+        "token": "b",
+        "start": 0.4491,
+        "end": 0.4678,
+        "duration_frames": 1
+    },
+    {
+        "token": "ạ",
+        "start": 0.4678,
+        "end": 0.4865,
+        "duration_frames": 1
+    },
+    {
+        "token": "n",
+        "start": 0.4865,
+        "end": 0.5053,
+        "duration_frames": 1
+    },
+    {
+        "token": " ",
+        "start": 0.5053,
+        "end": 0.524,
+        "duration_frames": 1
+    },
+    {
+        "token": "b",
+        "start": 0.524,
+        "end": 0.5427,
+        "duration_frames": 1
+    },
+    {
+        "token": "u",
+        "start": 0.5427,
+        "end": 0.5614,
+        "duration_frames": 1
+    },
+    {
+        "token": "ổ",
+        "start": 0.5614,
+        "end": 0.5801,
+        "duration_frames": 1
+    },
+    {
+        "token": "i",
+        "start": 0.5801,
+        "end": 0.5988,
+        "duration_frames": 1
+    },
+    {
+        "token": " ",
+        "start": 0.5988,
+        "end": 0.6175,
+        "duration_frames": 1
+    },
+    {
+        "token": "s",
+        "start": 0.6175,
+        "end": 0.6363,
+        "duration_frames": 1
+    },
+    {
+        "token": "á",
+        "start": 0.6363,
+        "end": 0.655,
+        "duration_frames": 1
+    },
+    {
+        "token": "n",
+        "start": 0.655,
+        "end": 0.6737,
+        "duration_frames": 1
+    },
+    {
+        "token": "g",
+        "start": 0.6737,
+        "end": 0.6924,
+        "duration_frames": 1
+    },
+    {
+        "token": " ",
+        "start": 0.6924,
+        "end": 0.7111,
+        "duration_frames": 1
+    },
+    {
+        "token": "t",
+        "start": 0.7111,
+        "end": 0.7298,
+        "duration_frames": 1
+    },
+    {
+        "token": "ố",
+        "start": 0.7298,
+        "end": 0.7485,
+        "duration_frames": 1
+    },
+    {
+        "token": "t",
+        "start": 0.7485,
+        "end": 0.7673,
+        "duration_frames": 1
+    },
+    {
+        "token": " ",
+        "start": 0.7673,
+        "end": 0.786,
+        "duration_frames": 1
+    },
+    {
+        "token": "l",
+        "start": 0.786,
+        "end": 0.8047,
+        "duration_frames": 1
+    },
+    {
+        "token": "à",
+        "start": 0.8047,
+        "end": 0.8234,
+        "duration_frames": 1
+    },
+    {
+        "token": "n",
+        "start": 0.8234,
+        "end": 0.8421,
+        "duration_frames": 1
+    },
+    {
+        "token": "h",
+        "start": 0.8421,
+        "end": 0.8608,
+        "duration_frames": 1
+    },
+    {
+        "token": "!",
+        "start": 0.8608,
+        "end": 0.8795,
+        "duration_frames": 1
+    },
+    {
+        "token": "",
+        "start": 0.8795,
+        "end": 0.8982,
+        "duration_frames": 1
+    },
+    {
+        "token": "",
+        "start": 0.8982,
+        "end": 0.917,
+        "duration_frames": 1
+    },
+    {
+        "token": "",
+        "start": 0.917,
+        "end": 0.9357,
+        "duration_frames": 1
+    },
+    {
+        "token": "",
+        "start": 0.9357,
+        "end": 0.9544,
+        "duration_frames": 1
+    },
+    {
+        "token": "",
+        "start": 0.9544,
+        "end": 0.9731,
+        "duration_frames": 1
+    },
+    {
+        "token": "",
+        "start": 0.9731,
+        "end": 0.9918,
+        "duration_frames": 1
+    },
+    {
+        "token": "",
+        "start": 0.9918,
+        "end": 1.0105,
+        "duration_frames": 1
+    },
+    {
+        "token": "",
+        "start": 1.0105,
+        "end": 1.0292,
+        "duration_frames": 1
+    },
+    {
+        "token": "",
+        "start": 1.0292,
+        "end": 1.048,
+        "duration_frames": 1
+    },
+    {
+        "token": "",
+        "start": 1.048,
+        "end": 1.0667,
+        "duration_frames": 1
+    }
+]
