@@ -281,24 +281,8 @@ async function loadDefaultFiles() {
 function rescaleAlignment() {
   if (alignmentData.length === 0 || !audioPlayer.duration) return;
 
-  // 1. Find the ORIGINAL end of the json (including padding tokens)
-  // TTS models usually output json lengths that map proportionally to the generated audio
-  const originalJsonEnd = alignmentData[alignmentData.length - 1].end;
-  if (originalJsonEnd <= 0) return;
-
-  // 2. Rescale all timestamps proportionally to audio duration
-  if (Math.abs(originalJsonEnd - audioPlayer.duration) > 0.1) {
-    const scale = audioPlayer.duration / originalJsonEnd;
-    console.log(`Rescaling JSON: ${originalJsonEnd.toFixed(3)}s → ${audioPlayer.duration.toFixed(3)}s (x${scale.toFixed(2)})`);
-    alignmentData = alignmentData.map(item => ({
-      ...item,
-      start: item.start * scale,
-      end: item.end * scale,
-    }));
-  }
-
-  // 3. Strip metadata block [lang:vi] from beginning
-  if (alignmentData.length > 0 && alignmentData[0].token === '[') {
+  // 1. Strip metadata block [lang:vi] from beginning
+  if (alignmentData[0].token === '[') {
     let metaEnd = 0;
     for (let i = 0; i < alignmentData.length; i++) {
       if (alignmentData[i].token === ']') {
@@ -307,14 +291,37 @@ function rescaleAlignment() {
       }
     }
     if (metaEnd > 0) {
+      const metaEndTime = alignmentData[metaEnd - 1].end;
       alignmentData = alignmentData.slice(metaEnd);
-      console.log(`Stripped metadata: removed ${metaEnd} tokens`);
+      // Offset all timestamps so speech starts at 0
+      alignmentData = alignmentData.map(item => ({
+        ...item,
+        start: Math.max(0, item.start - metaEndTime),
+        end: item.end - metaEndTime,
+      }));
+      console.log(`Stripped metadata: removed ${metaEnd} tokens, offset by ${metaEndTime.toFixed(4)}s`);
     }
   }
 
-  // 4. Strip trailing empty/padding tokens
+  // 2. Strip trailing empty/padding tokens
   while (alignmentData.length > 0 && !alignmentData[alignmentData.length - 1].token.trim()) {
     alignmentData.pop();
+  }
+  if (alignmentData.length === 0) return;
+
+  // 3. Find the end of actual speech content
+  const jsonEnd = alignmentData[alignmentData.length - 1].end;
+  if (jsonEnd <= 0) return;
+
+  // 4. Rescale if there's a significant difference
+  if (Math.abs(jsonEnd - audioPlayer.duration) > 0.1) {
+    const scale = audioPlayer.duration / jsonEnd;
+    console.log(`Rescaling JSON: ${jsonEnd.toFixed(3)}s → ${audioPlayer.duration.toFixed(3)}s (x${scale.toFixed(2)})`);
+    alignmentData = alignmentData.map(item => ({
+      ...item,
+      start: item.start * scale,
+      end: item.end * scale,
+    }));
   }
 }
 
