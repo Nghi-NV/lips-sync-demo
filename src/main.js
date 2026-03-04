@@ -5,73 +5,123 @@ const BASE = import.meta.env.BASE_URL;
 // Map Vietnamese characters to lip image numbers based on the reference chart
 const PHONEME_MAP = {
   // Lip #1: A, Ă
-  1: { chars: ['a', 'ă', 'á', 'à', 'ả', 'ã', 'ạ', 'ắ', 'ằ', 'ẳ', 'ẵ', 'ặ'], label: 'A, Ă' },
+  1: {
+    chars: ["a", "ă", "á", "à", "ả", "ã", "ạ", "ắ", "ằ", "ẳ", "ẵ", "ặ"],
+    label: "A, Ă",
+  },
   // Lip #2: V, PH
-  2: { chars: ['v', 'p', 'f'], label: 'V, PH' },
+  2: { chars: ["v", "f", "ph"], label: "V, PH" },
   // Lip #3: U, Ô
-  3: { chars: ['u', 'ô', 'ú', 'ù', 'ủ', 'ũ', 'ụ', 'ố', 'ồ', 'ổ', 'ỗ', 'ộ'], label: 'U, Ô' },
-  // Lip #4: X, TR
-  4: { chars: ['x', 's'], label: 'X, S' },
+  3: {
+    chars: ["u", "ô", "ú", "ù", "ủ", "ũ", "ụ", "ố", "ồ", "ổ", "ỗ", "ộ"],
+    label: "U, Ô",
+  },
+  // Lip #4: X, S
+  4: { chars: ["x", "s"], label: "X, S" },
   // Lip #5: Đ, L, N
-  5: { chars: ['đ', 'l', 'n', 'd'], label: 'Đ, L, N' },
-  // Lip #6: M
-  6: { chars: ['m', 'b', 'p'], label: 'M, B, P' },
+  5: { chars: ["đ", "l", "n", "d"], label: "Đ, L, N" },
+  // Lip #6: M, B, P
+  6: { chars: ["m", "b", "p"], label: "M, B, P" },
   // Lip #7: E, Ê, I, Y
-  7: { chars: ['e', 'ê', 'i', 'y', 'é', 'è', 'ẻ', 'ẽ', 'ẹ', 'ế', 'ề', 'ể', 'ễ', 'ệ', 'í', 'ì', 'ỉ', 'ĩ', 'ị', 'ý', 'ỳ', 'ỷ', 'ỹ', 'ỵ'], label: 'E, Ê, I, Y' },
+  7: {
+    chars: [
+      "e",
+      "ê",
+      "i",
+      "y",
+      "é",
+      "è",
+      "ẻ",
+      "ẽ",
+      "ẹ",
+      "ế",
+      "ề",
+      "ể",
+      "ễ",
+      "ệ",
+      "í",
+      "ì",
+      "ỉ",
+      "ĩ",
+      "ị",
+      "ý",
+      "ỳ",
+      "ỷ",
+      "ỹ",
+      "ỵ",
+    ],
+    label: "E, Ê, I, Y",
+  },
   // Lip #8: Ư
-  8: { chars: ['ư', 'ứ', 'ừ', 'ử', 'ữ', 'ự'], label: 'Ư' },
-  // Lip #9: Â, B, Ơ
-  9: { chars: ['â', 'ơ', 'ấ', 'ầ', 'ẩ', 'ẫ', 'ậ', 'ớ', 'ờ', 'ở', 'ỡ', 'ợ'], label: 'Â, Ơ' },
-  // Lip #10: K, CH
-  10: { chars: ['k', 'c'], label: 'K, C' },
+  8: { chars: ["ư", "ứ", "ừ", "ử", "ữ", "ự"], label: "Ư" },
+  // Lip #9: Â, Ơ
+  9: {
+    chars: ["â", "ơ", "ấ", "ầ", "ẩ", "ẫ", "ậ", "ớ", "ờ", "ở", "ỡ", "ợ"],
+    label: "Â, Ơ",
+  },
+  // Lip #10: K, C (âm /k/ đơn)
+  10: { chars: ["k", "c", "q"], label: "K, C" },
   // Lip #11: R
-  11: { chars: ['r'], label: 'R' },
-  // Lip #12: O, Q
-  12: { chars: ['o', 'q', 'ó', 'ò', 'ỏ', 'õ', 'ọ'], label: 'O, Q' },
+  11: { chars: ["r"], label: "R" },
+  // Lip #12: O
+  12: { chars: ["o", "ó", "ò", "ỏ", "õ", "ọ"], label: "O" },
   // Lip #13: SMIRK
-  13: { chars: [], label: 'SMIRK' },
+  13: { chars: [], label: "SMIRK" },
   // Lip #14: SAD
-  14: { chars: [], label: 'SAD' },
-  // Lip #15: TH, T
-  15: { chars: ['t'], label: 'TH, T' },
-  // Lip #16: C, D
-  16: { chars: [], label: 'C, D' },
+  14: { chars: [], label: "SAD" },
+  // Lip #15: TH, T — môi hở nhẹ, lưỡi sau răng
+  15: { chars: ["t", "th"], label: "TH, T" },
+  // Lip #16: CH — âm /tɕ/, miệng hé, lưỡi giữa
+  16: { chars: ["ch", "tr"], label: "CH, TR" },
   // Lip #17: NEUTRAL (silent/default)
-  17: { chars: [], label: 'NEUTRAL' },
+  17: { chars: [], label: "NEUTRAL" },
   // Lip #18: SMILE
-  18: { chars: [], label: 'SMILE' },
-  // Lip #19: NH
-  19: { chars: ['h'], label: 'H' },
-  // Lip #20: G
-  20: { chars: ['g'], label: 'G' },
+  18: { chars: [], label: "SMILE" },
+  // Lip #19: NH, H — hơi thở qua mũi/họng
+  19: { chars: ["h", "nh", "gi", "gh"], label: "NH, H" },
+  // Lip #20: G, NG — âm cổ họng
+  20: { chars: ["g", "ng", "ngh", "kh"], label: "G, NG" },
 };
+
+// ===== DIGRAPH / TRIGRAPH tiếng Việt =====
+// Thứ tự quan trọng: trigraph trước, digraph trước, đơn sau
+const VI_CLUSTERS = [
+  "ngh",
+  "ch",
+  "gh",
+  "gi",
+  "kh",
+  "ng",
+  "nh",
+  "ph",
+  "th",
+  "tr",
+];
 
 const NEUTRAL_LIP = 17;
 
 // ===== DOM Elements =====
-const lipOverlay = document.getElementById('lipOverlay');
-const phonemeValue = document.getElementById('phonemeValue');
-const uploadArea = document.getElementById('uploadArea');
-const filesInput = document.getElementById('filesInput');
-const nowPlaying = document.getElementById('nowPlaying');
-const trackName = document.getElementById('trackName');
-const btnPlayPause = document.getElementById('btnPlayPause');
-const btnStop = document.getElementById('btnStop');
-const btnUploadNew = document.getElementById('btnUploadNew');
-const playIcon = document.getElementById('playIcon');
-const pauseIcon = document.getElementById('pauseIcon');
-const progressBar = document.getElementById('progressBar');
-const progressContainer = document.getElementById('progressContainer');
-const currentTimeEl = document.getElementById('currentTime');
-const totalTimeEl = document.getElementById('totalTime');
-const characterContainer = document.getElementById('characterContainer');
-const chartGrid = document.getElementById('chartGrid');
-const timelineTokens = document.getElementById('timelineTokens');
-
-
+const lipOverlay = document.getElementById("lipOverlay");
+const phonemeValue = document.getElementById("phonemeValue");
+const uploadArea = document.getElementById("uploadArea");
+const filesInput = document.getElementById("filesInput");
+const nowPlaying = document.getElementById("nowPlaying");
+const trackName = document.getElementById("trackName");
+const btnPlayPause = document.getElementById("btnPlayPause");
+const btnStop = document.getElementById("btnStop");
+const btnUploadNew = document.getElementById("btnUploadNew");
+const playIcon = document.getElementById("playIcon");
+const pauseIcon = document.getElementById("pauseIcon");
+const progressBar = document.getElementById("progressBar");
+const progressContainer = document.getElementById("progressContainer");
+const currentTimeEl = document.getElementById("currentTime");
+const totalTimeEl = document.getElementById("totalTime");
+const characterContainer = document.getElementById("characterContainer");
+const chartGrid = document.getElementById("chartGrid");
+const timelineTokens = document.getElementById("timelineTokens");
 
 // ===== Audio & Logic State =====
-let audioPlayer = document.getElementById('audioPlayer');
+let audioPlayer = document.getElementById("audioPlayer");
 let isPlaying = false;
 let animationFrameId = null;
 let currentLipId = NEUTRAL_LIP;
@@ -102,8 +152,6 @@ function initAudioContext() {
   }
 }
 
-
-
 // ===== Preload all lip images =====
 const lipImages = {};
 for (let i = 1; i <= 20; i++) {
@@ -121,8 +169,8 @@ function setLip(lipId, tokenText) {
   phonemeValue.textContent = tokenText || PHONEME_MAP[lipId].label;
 
   // Update chart active state
-  document.querySelectorAll('.chart-item').forEach(item => {
-    item.classList.toggle('active', item.dataset.lipId === String(lipId));
+  document.querySelectorAll(".chart-item").forEach((item) => {
+    item.classList.toggle("active", item.dataset.lipId === String(lipId));
   });
 }
 
@@ -130,21 +178,100 @@ function setLip(lipId, tokenText) {
 function getLipIdForToken(token) {
   // If empty or non-alphabetic, return neutral
   if (!token) return NEUTRAL_LIP;
-  const char = token.toLowerCase().trim();
-  if (!char) {
-    return NEUTRAL_LIP;
-  }
+  const normalized = token.toLowerCase().trim();
+  if (!normalized) return NEUTRAL_LIP;
 
-  // Handle multi-character phonemes first if any exist in the token string
-  // For simplicity since the JSON looks character by character, we just match the single character
-
+  // Tìm trong PHONEME_MAP (hỗ trợ cả digraph lẫn ký tự đơn)
   for (const [lipId, data] of Object.entries(PHONEME_MAP)) {
-    if (data.chars.includes(char)) {
+    if (data.chars.includes(normalized)) {
       return parseInt(lipId);
     }
   }
 
   return NEUTRAL_LIP;
+}
+
+// ===== Gom các token liên tiếp thành digraph/trigraph =====
+// Ví dụ: [{token:"c"},{token:"h"}] → [{token:"ch", start, end}]
+function mergeClusterTokens(sylItems) {
+  if (sylItems.length === 0) return sylItems;
+  const merged = [];
+  let i = 0;
+  while (i < sylItems.length) {
+    let matched = false;
+    // Thử ghép 3 ký tự trước (ngh)
+    if (i + 2 < sylItems.length) {
+      const tri = (
+        sylItems[i].token +
+        sylItems[i + 1].token +
+        sylItems[i + 2].token
+      ).toLowerCase();
+      if (VI_CLUSTERS.includes(tri)) {
+        merged.push({
+          token: tri,
+          start: sylItems[i].start,
+          end: sylItems[i + 2].end,
+        });
+        i += 3;
+        matched = true;
+      }
+    }
+    // Thử ghép 2 ký tự (ch, nh, ng, ...)
+    if (!matched && i + 1 < sylItems.length) {
+      const di = (sylItems[i].token + sylItems[i + 1].token).toLowerCase();
+      if (VI_CLUSTERS.includes(di)) {
+        merged.push({
+          token: di,
+          start: sylItems[i].start,
+          end: sylItems[i + 1].end,
+        });
+        i += 2;
+        matched = true;
+      }
+    }
+    if (!matched) {
+      merged.push(sylItems[i]);
+      i++;
+    }
+  }
+  return merged;
+}
+
+// ===== Tách đa âm tiết trong một từ =====
+// VD: "Lumi" = [L,u,m,i] → [[L,u], [m,i]]   (Lu + mi = 2 âm tiết)
+function splitToSubSyllables(items, vowelSet) {
+  const result = [];
+  let current = [];
+  let vowelFound = false;
+
+  for (let i = 0; i < items.length; i++) {
+    const ch = items[i].token.toLowerCase().trim();
+    const isVowel = vowelSet.includes(ch);
+
+    if (isVowel && vowelFound) {
+      // Đã có nguyên âm trước → kiểm tra cái trước nó có phải phụ âm không
+      const prev = current[current.length - 1];
+      const prevCh = prev ? prev.token.toLowerCase().trim() : "";
+      const prevIsVowel = vowelSet.includes(prevCh);
+
+      if (!prevIsVowel && prevCh !== "") {
+        // Phụ âm cầu nối → tách: phụ âm đó đi với âm tiết tiếp theo
+        const bridgeConsonant = current.pop(); // tách phụ âm cầu ra
+        result.push(current); // lưu âm tiết cũ
+        current = [bridgeConsonant, items[i]]; // bắt đầu âm tiết mới
+        vowelFound = true;
+      } else {
+        // Hai nguyên âm liền nhau (VD: "oa", "ui") → cùng âm tiết
+        current.push(items[i]);
+      }
+    } else {
+      if (isVowel) vowelFound = true;
+      current.push(items[i]);
+    }
+  }
+
+  if (current.length > 0) result.push(current);
+  return result.length > 0 ? result : [items];
 }
 
 // ===== Animation Loop =====
@@ -173,7 +300,7 @@ function animate() {
     const item = alignmentData[activeIndex];
     const lipId = item._lipId || getLipIdForToken(item.token);
     // Show the token text (word being spoken)
-    const displayText = item.token || '';
+    const displayText = item.token || "";
     setLip(lipId, displayText.toUpperCase());
     lastActiveLipTime = time;
   } else if (alignmentData.length === 0 && analyser && isPlaying) {
@@ -229,12 +356,15 @@ function animate() {
   // 3. Update timeline UI
   if (activeIndex !== currentTokenIndex) {
     // Remove old active class
-    if (currentTokenIndex !== -1 && timelineTokens.children[currentTokenIndex]) {
-      timelineTokens.children[currentTokenIndex].classList.remove('active');
+    if (
+      currentTokenIndex !== -1 &&
+      timelineTokens.children[currentTokenIndex]
+    ) {
+      timelineTokens.children[currentTokenIndex].classList.remove("active");
     }
     // Add new active class
     if (activeIndex !== -1 && timelineTokens.children[activeIndex]) {
-      timelineTokens.children[activeIndex].classList.add('active');
+      timelineTokens.children[activeIndex].classList.add("active");
     }
     currentTokenIndex = activeIndex;
   }
@@ -244,7 +374,7 @@ function animate() {
     const pct = time / audioPlayer.duration;
     // 100% of tokens width corresponds to audio duration
     const containerWidth = timelineTokens.parentElement.offsetWidth;
-    const scrollPos = (pct * timelineTokens.scrollWidth) - (containerWidth / 2);
+    const scrollPos = pct * timelineTokens.scrollWidth - containerWidth / 2;
     timelineTokens.style.transform = `translateX(-${scrollPos}px)`;
   }
 
@@ -253,10 +383,11 @@ function animate() {
 
 // ===== Build Timeline =====
 function buildTimeline() {
-  timelineTokens.innerHTML = '';
+  timelineTokens.innerHTML = "";
 
   // Calculate total duration from Audio or JSON data, whichever is longer
-  let totalDuration = alignmentData.length > 0 ? alignmentData[alignmentData.length - 1].end : 0;
+  let totalDuration =
+    alignmentData.length > 0 ? alignmentData[alignmentData.length - 1].end : 0;
   if (audioPlayer.duration && audioPlayer.duration > totalDuration) {
     totalDuration = audioPlayer.duration;
   }
@@ -268,26 +399,26 @@ function buildTimeline() {
   const pixelsPerSecond = Math.max(containerWidth / totalDuration, 300);
 
   if (alignmentData.length > 0) {
-    timelineTokens.style.width = (totalDuration * pixelsPerSecond) + 'px';
+    timelineTokens.style.width = totalDuration * pixelsPerSecond + "px";
   } else {
-    timelineTokens.style.width = '100%';
+    timelineTokens.style.width = "100%";
   }
 
-  alignmentData.forEach(item => {
-    const span = document.createElement('span');
-    span.className = 'timeline-token';
+  alignmentData.forEach((item) => {
+    const span = document.createElement("span");
+    span.className = "timeline-token";
 
     let displayToken = item.token;
-    if (displayToken === ' ') displayToken = '&nbsp;';
+    if (displayToken === " ") displayToken = "&nbsp;";
     span.innerHTML = displayToken;
 
     // Calculate absolute left & width
     const left = item.start * pixelsPerSecond;
     const width = (item.end - item.start) * pixelsPerSecond;
 
-    span.style.position = 'absolute';
-    span.style.left = left + 'px';
-    span.style.width = width + 'px';
+    span.style.position = "absolute";
+    span.style.left = left + "px";
+    span.style.width = width + "px";
 
     timelineTokens.appendChild(span);
   });
@@ -305,23 +436,25 @@ function updateProgress() {
 function formatTime(sec) {
   const m = Math.floor(sec / 60);
   const s = Math.floor(sec % 60);
-  return `${m}:${s.toString().padStart(2, '0')}`;
+  return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
 // ===== Build Lip Chart =====
 function buildChart() {
-  const order = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 19, 20, 17, 13, 14, 18];
-  order.forEach(id => {
-    const item = document.createElement('div');
-    item.className = 'chart-item';
+  const order = [
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 19, 20, 17, 13, 14, 18,
+  ];
+  order.forEach((id) => {
+    const item = document.createElement("div");
+    item.className = "chart-item";
     item.dataset.lipId = id;
-    if (id === NEUTRAL_LIP) item.classList.add('active');
+    if (id === NEUTRAL_LIP) item.classList.add("active");
     item.innerHTML = `
       <img src="${BASE}assets/lips/${id}.png" alt="${PHONEME_MAP[id].label}" />
       <span>${PHONEME_MAP[id].label}</span>
     `;
     // Click to preview
-    item.addEventListener('click', () => setLip(id));
+    item.addEventListener("click", () => setLip(id));
     chartGrid.appendChild(item);
   });
 }
@@ -329,15 +462,15 @@ function buildChart() {
 // ===== Startup Defaults & Load Logic =====
 async function loadDefaultFiles() {
   try {
-    const audioRes = await fetch(`${BASE}audio-1.wav`);
+    const audioRes = await fetch(`${BASE}au-2.wav`);
     if (!audioRes.ok) throw new Error("Audio 404");
     const audioBlob = await audioRes.blob();
 
-    const jsonRes = await fetch(`${BASE}alignment_audio-1.json`);
+    const jsonRes = await fetch(`${BASE}alignment_au-2.json`);
     if (!jsonRes.ok) throw new Error("JSON 404");
     const jsonData = await jsonRes.json();
 
-    processLoadedFiles(audioBlob, jsonData, "audio-1.wav (Mặc định)");
+    processLoadedFiles(audioBlob, jsonData, "au-2.wav (Mặc định)");
   } catch (e) {
     console.warn("Could not load default files", e);
   }
@@ -348,10 +481,10 @@ function rescaleAlignment() {
   if (alignmentData.length === 0 || !audioPlayer.duration) return;
 
   // 1. Strip metadata block [lang:vi] from beginning
-  if (alignmentData[0].token === '[') {
+  if (alignmentData[0].token === "[") {
     let metaEnd = 0;
     for (let i = 0; i < alignmentData.length; i++) {
-      if (alignmentData[i].token === ']') {
+      if (alignmentData[i].token === "]") {
         metaEnd = i + 1;
         break;
       }
@@ -360,17 +493,22 @@ function rescaleAlignment() {
       const metaEndTime = alignmentData[metaEnd - 1].end;
       alignmentData = alignmentData.slice(metaEnd);
       // Offset all timestamps so speech starts at 0
-      alignmentData = alignmentData.map(item => ({
+      alignmentData = alignmentData.map((item) => ({
         ...item,
         start: Math.max(0, item.start - metaEndTime),
         end: item.end - metaEndTime,
       }));
-      console.log(`Stripped metadata: removed ${metaEnd} tokens, offset by ${metaEndTime.toFixed(4)}s`);
+      console.log(
+        `Stripped metadata: removed ${metaEnd} tokens, offset by ${metaEndTime.toFixed(4)}s`,
+      );
     }
   }
 
   // 2. Strip trailing empty/padding tokens
-  while (alignmentData.length > 0 && !alignmentData[alignmentData.length - 1].token.trim()) {
+  while (
+    alignmentData.length > 0 &&
+    !alignmentData[alignmentData.length - 1].token.trim()
+  ) {
     alignmentData.pop();
   }
   if (alignmentData.length === 0) return;
@@ -382,8 +520,10 @@ function rescaleAlignment() {
   // 4. Rescale if there's a significant difference
   if (Math.abs(jsonEnd - audioPlayer.duration) > 0.1) {
     const scale = audioPlayer.duration / jsonEnd;
-    console.log(`Rescaling JSON: ${jsonEnd.toFixed(3)}s → ${audioPlayer.duration.toFixed(3)}s (x${scale.toFixed(2)})`);
-    alignmentData = alignmentData.map(item => ({
+    console.log(
+      `Rescaling JSON: ${jsonEnd.toFixed(3)}s → ${audioPlayer.duration.toFixed(3)}s (x${scale.toFixed(2)})`,
+    );
+    alignmentData = alignmentData.map((item) => ({
       ...item,
       start: item.start * scale,
       end: item.end * scale,
@@ -395,13 +535,35 @@ function rescaleAlignment() {
 function smoothAlignment() {
   if (alignmentData.length === 0) return;
 
-  const vowels = 'aăâeêioôơuưyáàảãạắằẳẵặấầẩẫậéèẻẽẹếềểễệíìỉĩịóòỏõọốồổỗộớờởỡợúùủũụứừửữựýỳỷỹỵ';
+  const vowels =
+    "aăâeêioôơuưyáàảãạắằẳẵặấầẩẫậéèẻẽẹếềểễệíìỉĩịóòỏõọốồổỗộớờởỡợúùủũụứừửữựýỳỷỹỵ";
+
+  // Phụ âm xát/mũi/lỏng: khẩu hình miệng kết hợp nhanh với nguyên âm, không cần chớp riêng
+  const singleFrameOnsets = [
+    // Phụ âm xát/mũi/lỏng: hòa vào nguyên âm rất nhanh
+    "x",
+    "s",
+    "h",
+    "ph",
+    "v",
+    "m",
+    "n",
+    "nh",
+    "l",
+    "r",
+    "d",
+    "gi",
+    "p",
+    "đ",
+    "g",
+    "c",
+  ];
 
   // 0. Strip metadata block [lang:vi] from beginning
   let startIdx = 0;
-  if (alignmentData.length > 0 && alignmentData[0].token === '[') {
+  if (alignmentData.length > 0 && alignmentData[0].token === "[") {
     for (let i = 0; i < alignmentData.length; i++) {
-      if (alignmentData[i].token === ']') {
+      if (alignmentData[i].token === "]") {
         startIdx = i + 1;
         break;
       }
@@ -415,7 +577,7 @@ function smoothAlignment() {
 
   for (const item of cleanData) {
     const t = item.token.trim();
-    if (!t || t === ' ' || /^[^a-zA-ZÀ-ỹ]$/.test(t)) {
+    if (!t || t === " " || /^[^a-zA-ZÀ-ỹ]$/.test(t)) {
       if (currentSyl.length > 0) {
         syllables.push(currentSyl);
         currentSyl = [];
@@ -431,68 +593,87 @@ function smoothAlignment() {
     return;
   }
 
-  // 2. For each syllable, create sub-phases: onset → vowel → coda
+  // 2. For each syllable, create sub-phases: onset → vowel
   const segments = [];
 
-  for (const syl of syllables) {
-    const sylStart = syl[0].start;
-    const sylEnd = syl[syl.length - 1].end;
-    const sylDur = sylEnd - sylStart;
-    const fullToken = syl.map(s => s.token).join('');
+  for (const rawSyl of syllables) {
+    // Gom digraph/trigraph trước khi phân tích
+    const merged = mergeClusterTokens(rawSyl);
 
-    // Find consonant onset and vowel
-    let onsetLipId = NEUTRAL_LIP;
-    let vowelLipId = NEUTRAL_LIP;
-    let codaLipId = NEUTRAL_LIP;
-    let vowelFound = false;
+    // Tách đa âm tiết trong 1 từ (VD: "Lumi" → ["Lu","mi"])
+    const subSyllables = splitToSubSyllables(merged, vowels);
 
-    for (const item of syl) {
-      const ch = item.token.toLowerCase().trim();
-      if (!ch) continue;
+    for (const syl of subSyllables) {
+      const sylStart = syl[0].start;
+      const sylEnd = syl[syl.length - 1].end;
+      const sylDur = sylEnd - sylStart;
+      const fullToken = rawSyl.map((s) => s.token).join(""); // hiển thị nguyên bản toàn từ
 
-      if (vowels.includes(ch)) {
-        vowelLipId = getLipIdForToken(ch);
-        vowelFound = true;
-      } else if (!vowelFound) {
-        // Consonant before vowel = onset
-        onsetLipId = getLipIdForToken(ch);
-      } else {
-        // Consonant after vowel = coda
-        codaLipId = getLipIdForToken(ch);
+      // Find consonant onset and vowel (sau khi đã gom digraph)
+      let onsetLipId = NEUTRAL_LIP;
+      let vowelLipId = NEUTRAL_LIP;
+      let vowelFound = false;
+
+      // Phân tích từ để lấy âm đầu (onset) âm chính (vowel)
+      let onsetText = "";
+      for (const item of syl) {
+        const ch = item.token.toLowerCase().trim();
+        if (!ch) continue;
+
+        if (vowels.includes(ch)) {
+          if (!vowelFound) {
+            vowelLipId = getLipIdForToken(ch);
+            vowelFound = true;
+          }
+        } else if (!vowelFound) {
+          // Consonant before vowel = onset
+          onsetText = ch;
+          onsetLipId = getLipIdForToken(ch);
+        }
       }
-    }
 
-    // If no vowel found, use the onset consonant for the whole syllable
-    if (vowelLipId === NEUTRAL_LIP) {
-      vowelLipId = onsetLipId;
-    }
+      // If no vowel found, use the onset consonant for the whole syllable
+      if (vowelLipId === NEUTRAL_LIP) {
+        vowelLipId = onsetLipId;
+      }
 
-    // Create sub-segments: onset(20%) → vowel(50%) → coda(30%)
-    const hasOnset = onsetLipId !== NEUTRAL_LIP && onsetLipId !== vowelLipId;
-    const hasCoda = codaLipId !== NEUTRAL_LIP && codaLipId !== vowelLipId;
+      // Kiểm tra xem phụ âm đầu có thuộc nhóm cấu âm nhẹ/xát/mũi không (x, s, h...)
+      const isSingleFrameOnset = singleFrameOnsets.includes(onsetText);
 
-    if (sylDur < 0.06) {
-      segments.push({ token: fullToken, start: sylStart, end: sylEnd, _lipId: vowelLipId });
-    } else if (hasOnset && hasCoda) {
-      const onsetEnd = sylStart + sylDur * 0.20;
-      const codaStart = sylEnd - sylDur * 0.25;
-      segments.push({ token: '', start: sylStart, end: onsetEnd, _lipId: onsetLipId });
-      segments.push({ token: fullToken, start: onsetEnd, end: codaStart, _lipId: vowelLipId });
-      segments.push({ token: '', start: codaStart, end: sylEnd, _lipId: codaLipId });
-    } else if (hasOnset) {
-      const onsetEnd = sylStart + sylDur * 0.25;
-      segments.push({ token: '', start: sylStart, end: onsetEnd, _lipId: onsetLipId });
-      segments.push({ token: fullToken, start: onsetEnd, end: sylEnd, _lipId: vowelLipId });
-    } else if (hasCoda) {
-      const codaStart = sylEnd - sylDur * 0.30;
-      segments.push({ token: fullToken, start: sylStart, end: codaStart, _lipId: vowelLipId });
-      segments.push({ token: '', start: codaStart, end: sylEnd, _lipId: codaLipId });
-    } else {
-      segments.push({ token: fullToken, start: sylStart, end: sylEnd, _lipId: vowelLipId });
+      // Create sub-segments: onset(30%) → vowel(70%)
+      const hasOnset = onsetLipId !== NEUTRAL_LIP && onsetLipId !== vowelLipId;
+
+      if (sylDur < 0.08 || !hasOnset || isSingleFrameOnset) {
+        // Âm quá ngắn, hoặc không có phụ âm đầu rõ ràng,
+        // hoặc phụ âm đầu là loại ít đổi khẩu hình -> Chỉ dùng 1 frame
+        segments.push({
+          token: fullToken,
+          start: sylStart,
+          end: sylEnd,
+          _lipId: vowelLipId,
+        });
+      } else {
+        // Có phụ âm đầu: chia 30% cho phụ âm đầu, 70% cho vần
+        const onsetEnd = sylStart + sylDur * 0.3;
+        segments.push({
+          token: fullToken, // Giữ nguyên text để UI không bị giật
+          start: sylStart,
+          end: onsetEnd,
+          _lipId: onsetLipId,
+        });
+        segments.push({
+          token: fullToken, // Giữ nguyên text
+          start: onsetEnd,
+          end: sylEnd,
+          _lipId: vowelLipId,
+        });
+      }
     }
   }
 
-  console.log(`Smoothed: ${alignmentData.length} tokens → ${segments.length} sub-segments (from ${syllables.length} syllables)`);
+  console.log(
+    `Smoothed: ${alignmentData.length} tokens → ${segments.length} sub-segments (from ${syllables.length} syllables)`,
+  );
   alignmentData = segments;
 }
 
@@ -511,8 +692,8 @@ function processLoadedFiles(audioFile, jsonData, nameDisplay) {
   audioPlayer.load();
 
   trackName.textContent = nameDisplay;
-  uploadArea.classList.add('hidden');
-  nowPlaying.classList.remove('hidden');
+  uploadArea.classList.add("hidden");
+  nowPlaying.classList.remove("hidden");
 }
 
 // ===== File Upload Handlers =====
@@ -521,9 +702,9 @@ function handleFiles(files) {
   let jsonFile = null;
 
   for (const f of files) {
-    if (f.type.startsWith('audio/') || f.name.match(/\.(wav|mp3|ogg|m4a)$/i)) {
+    if (f.type.startsWith("audio/") || f.name.match(/\.(wav|mp3|ogg|m4a)$/i)) {
       audioFile = f;
-    } else if (f.type === 'application/json' || f.name.match(/\.json$/i)) {
+    } else if (f.type === "application/json" || f.name.match(/\.json$/i)) {
       jsonFile = f;
     }
   }
@@ -592,27 +773,27 @@ function stopPlayback() {
   isPlaying = false;
   setLip(NEUTRAL_LIP);
   updatePlayButton();
-  characterContainer.classList.remove('speaking');
-  progressBar.style.width = '0%';
-  currentTimeEl.textContent = '0:00';
+  characterContainer.classList.remove("speaking");
+  progressBar.style.width = "0%";
+  currentTimeEl.textContent = "0:00";
 
   if (currentTokenIndex !== -1 && timelineTokens.children[currentTokenIndex]) {
-    timelineTokens.children[currentTokenIndex].classList.remove('active');
+    timelineTokens.children[currentTokenIndex].classList.remove("active");
   }
   currentTokenIndex = -1;
   timelineTokens.style.transform = `translateX(0px)`;
 }
 
 function updatePlayButton() {
-  playIcon.classList.toggle('hidden', isPlaying);
-  pauseIcon.classList.toggle('hidden', !isPlaying);
+  playIcon.classList.toggle("hidden", isPlaying);
+  pauseIcon.classList.toggle("hidden", !isPlaying);
 }
 
 // ===== Speed Control =====
 const SPEEDS = [0.25, 0.5, 0.75, 1];
 let speedIndex = 3; // default 1x
-const btnSpeed = document.getElementById('btnSpeed');
-const speedLabel = document.getElementById('speedLabel');
+const btnSpeed = document.getElementById("btnSpeed");
+const speedLabel = document.getElementById("speedLabel");
 
 function cycleSpeed() {
   speedIndex = (speedIndex + 1) % SPEEDS.length;
@@ -620,91 +801,92 @@ function cycleSpeed() {
   audioPlayer.playbackRate = rate;
   speedLabel.textContent = `${rate}x`;
   // Highlight when slow
-  btnSpeed.style.borderColor = rate < 1 ? 'var(--accent)' : 'var(--glass-border)';
-  btnSpeed.style.color = rate < 1 ? 'var(--accent)' : 'var(--text-primary)';
+  btnSpeed.style.borderColor =
+    rate < 1 ? "var(--accent)" : "var(--glass-border)";
+  btnSpeed.style.color = rate < 1 ? "var(--accent)" : "var(--text-primary)";
 }
 
-btnSpeed.addEventListener('click', cycleSpeed);
+btnSpeed.addEventListener("click", cycleSpeed);
 
 // ===== Event Listeners =====
 
 // Upload Area Handlers
-uploadArea.addEventListener('click', () => filesInput.click());
-filesInput.addEventListener('change', (e) => {
+uploadArea.addEventListener("click", () => filesInput.click());
+filesInput.addEventListener("change", (e) => {
   if (e.target.files.length > 0) handleFiles(e.target.files);
-  e.target.value = '';
+  e.target.value = "";
 });
 
 // Drag & drop on Upload Area
-uploadArea.addEventListener('dragover', (e) => {
+uploadArea.addEventListener("dragover", (e) => {
   e.preventDefault();
-  uploadArea.classList.add('drag-over');
+  uploadArea.classList.add("drag-over");
 });
-uploadArea.addEventListener('dragleave', () => {
-  uploadArea.classList.remove('drag-over');
+uploadArea.addEventListener("dragleave", () => {
+  uploadArea.classList.remove("drag-over");
 });
-uploadArea.addEventListener('drop', (e) => {
+uploadArea.addEventListener("drop", (e) => {
   e.preventDefault();
-  uploadArea.classList.remove('drag-over');
+  uploadArea.classList.remove("drag-over");
   if (e.dataTransfer.files.length > 0) handleFiles(e.dataTransfer.files);
 });
 
 // Drag & Drop on Now Playing Component (to hot-swap JSON)
-nowPlaying.addEventListener('dragover', (e) => {
+nowPlaying.addEventListener("dragover", (e) => {
   e.preventDefault();
-  nowPlaying.classList.add('drag-over');
+  nowPlaying.classList.add("drag-over");
 });
-nowPlaying.addEventListener('dragleave', () => {
-  nowPlaying.classList.remove('drag-over');
+nowPlaying.addEventListener("dragleave", () => {
+  nowPlaying.classList.remove("drag-over");
 });
-nowPlaying.addEventListener('drop', (e) => {
+nowPlaying.addEventListener("drop", (e) => {
   e.preventDefault();
-  nowPlaying.classList.remove('drag-over');
+  nowPlaying.classList.remove("drag-over");
   if (e.dataTransfer.files.length > 0) handleFiles(e.dataTransfer.files);
 });
 
 // Playback buttons
-btnPlayPause.addEventListener('click', togglePlay);
-btnStop.addEventListener('click', stopPlayback);
-btnUploadNew.addEventListener('click', () => {
+btnPlayPause.addEventListener("click", togglePlay);
+btnStop.addEventListener("click", stopPlayback);
+btnUploadNew.addEventListener("click", () => {
   stopPlayback();
-  audioPlayer.src = '';
-  nowPlaying.classList.add('hidden');
-  uploadArea.classList.remove('hidden');
+  audioPlayer.src = "";
+  nowPlaying.classList.add("hidden");
+  uploadArea.classList.remove("hidden");
   alignmentData = [];
 });
 
 // Audio events
-audioPlayer.addEventListener('play', () => {
+audioPlayer.addEventListener("play", () => {
   // Initialize Web Audio API on first user interaction to bypass autoplay policies
   initAudioContext();
-  if (audioContext && audioContext.state === 'suspended') {
+  if (audioContext && audioContext.state === "suspended") {
     audioContext.resume();
   }
 
   isPlaying = true;
   updatePlayButton();
-  characterContainer.classList.add('speaking');
+  characterContainer.classList.add("speaking");
   if (!animationFrameId) animate();
 });
 
-audioPlayer.addEventListener('pause', () => {
+audioPlayer.addEventListener("pause", () => {
   isPlaying = false;
   updatePlayButton();
-  characterContainer.classList.remove('speaking');
+  characterContainer.classList.remove("speaking");
   setLip(NEUTRAL_LIP);
 });
 
-audioPlayer.addEventListener('ended', () => {
+audioPlayer.addEventListener("ended", () => {
   isPlaying = false;
   updatePlayButton();
-  characterContainer.classList.remove('speaking');
+  characterContainer.classList.remove("speaking");
   setLip(NEUTRAL_LIP);
-  progressBar.style.width = '100%';
+  progressBar.style.width = "100%";
 });
 
 // Progress bar seek
-progressContainer.addEventListener('click', (e) => {
+progressContainer.addEventListener("click", (e) => {
   if (!audioPlayer.duration) return;
   const rect = progressContainer.getBoundingClientRect();
   const pct = (e.clientX - rect.left) / rect.width;
