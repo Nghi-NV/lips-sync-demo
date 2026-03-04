@@ -161,11 +161,40 @@ for (let i = 1; i <= 20; i++) {
 }
 
 // ===== Set Lip =====
+const lipOverlay2 = document.getElementById("lipOverlay2");
+lipOverlay.style.opacity = "1";
+const MIN_HOLD_MS = 100; // Mỗi khẩu hình giữ ít nhất 150ms
+let lastLipChangeTime = 0;
+
 function setLip(lipId, tokenText) {
   if (lipId === currentLipId && !tokenText) return;
+
+  const now = performance.now();
+  const elapsed = now - lastLipChangeTime;
+
+  // Debounce nháy quá nhanh (chỉ áp dụng nếu đang đổi sang hình khác neutral)
+  if (
+    elapsed < MIN_HOLD_MS &&
+    lipId !== NEUTRAL_LIP &&
+    currentLipId !== NEUTRAL_LIP
+  ) {
+    return;
+  }
+
   currentLipId = lipId;
-  lipOverlay.src = `${BASE}assets/lips/${lipId}.png`;
-  // Show current spoken token if available, otherwise show lip group label
+  lastLipChangeTime = now;
+
+  // Kỹ thuật cross-fade bằng CSS Opacity
+  if (lipOverlay.style.opacity === "0.02") {
+    lipOverlay.src = `${BASE}assets/lips/${lipId}.png`;
+    lipOverlay.style.opacity = "1";
+    lipOverlay2.style.opacity = "0.02";
+  } else {
+    lipOverlay2.src = `${BASE}assets/lips/${lipId}.png`;
+    lipOverlay2.style.opacity = "1";
+    lipOverlay.style.opacity = "0.02";
+  }
+
   phonemeValue.textContent = tokenText || PHONEME_MAP[lipId].label;
 
   // Update chart active state
@@ -295,14 +324,48 @@ function animate() {
     }
   }
 
-  // 2. Set Lip State
-  if (activeIndex !== -1) {
+  // --- 2. Gating Âm Lượng & Hiệu Ứng Anime Squash & Stretch ---
+  let currentVolume = 0;
+  if (analyser && dataArray) {
+    analyser.getByteFrequencyData(dataArray);
+    let sum = 0;
+    for (let i = 0; i < dataArray.length; i++) sum += dataArray[i];
+    currentVolume = sum / dataArray.length; // 0–255
+  }
+
+  // Hiệu ứng "Anime": Mở to miệng khi volume lớn, thu hẹp lại khi volume nhỏ.
+  // Base scale = 1, tối đa scale Y lên 1.3 và thu hẹp Scale X xuống 0.95 (Squash & stretch)
+  let scaleY = 1.0;
+  let scaleX = 1.0;
+  if (currentVolume > 2) {
+    // 2 = rất nhạy để bắt cả các âm gió nhỏ
+    const volumeRatio = Math.min(currentVolume / 70, 1); // Đạt 70 là max há to rồi
+    scaleY = 1.0 + 0.35 * volumeRatio;
+    // Nhép miệng cao lên thì bề ngang hẹp lại chút xíu cho tự nhiên
+    scaleX = 1.0 - 0.05 * volumeRatio;
+  }
+
+  // Áp dụng CSS Transform trực tiếp
+  lipOverlay.style.transform = `translateX(-50%) scale(${scaleX}, ${scaleY})`;
+  lipOverlay2.style.transform = `translateX(-50%) scale(${scaleX}, ${scaleY})`;
+
+  const SILENCE_THRESHOLD = 5;
+  const isSilent = currentVolume < SILENCE_THRESHOLD;
+
+  // 3. Set Lip State
+  if (activeIndex !== -1 && !isSilent) {
     const item = alignmentData[activeIndex];
     const lipId = item._lipId || getLipIdForToken(item.token);
     // Show the token text (word being spoken)
     const displayText = item.token || "";
     setLip(lipId, displayText.toUpperCase());
     lastActiveLipTime = time;
+  } else if (isSilent) {
+    // Về NEUTRAL ngay khi im lặng
+    const timeSinceLastActive = time - lastActiveLipTime;
+    if (timeSinceLastActive > 0.05) {
+      setLip(NEUTRAL_LIP);
+    }
   } else if (alignmentData.length === 0 && analyser && isPlaying) {
     // REAL-TIME AUDIO ANALYSIS FALLBACK (Volume based)
     analyser.getByteFrequencyData(dataArray);
@@ -377,7 +440,6 @@ function animate() {
     const scrollPos = pct * timelineTokens.scrollWidth - containerWidth / 2;
     timelineTokens.style.transform = `translateX(-${scrollPos}px)`;
   }
-
   updateProgress();
 }
 
@@ -572,21 +634,33 @@ function smoothAlignment() {
   const cleanData = alignmentData.slice(startIdx);
 
   // 1. Split tokens into syllable groups (separated by spaces/punctuation/empty)
+  // Đồng thời ghi nhận các dấu câu (., !, ?) làm điểm nghỉ (pause)
   const syllables = [];
+  const pauseAfterSyl = []; // parallel array: true nếu sau syllable đó có dấu câu
   let currentSyl = [];
+  let pendingPause = false; // có dấu câu đang chờ
 
   for (const item of cleanData) {
     const t = item.token.trim();
     if (!t || t === " " || /^[^a-zA-ZÀ-ỹ]$/.test(t)) {
+      // Kiểm tra có phải dấu câu (nghỉ) không
+      if (/^[.!?;,]$/.test(t)) {
+        pendingPause = true;
+      }
       if (currentSyl.length > 0) {
         syllables.push(currentSyl);
+        pauseAfterSyl.push(pendingPause);
+        pendingPause = false;
         currentSyl = [];
       }
     } else {
       currentSyl.push(item);
     }
   }
-  if (currentSyl.length > 0) syllables.push(currentSyl);
+  if (currentSyl.length > 0) {
+    syllables.push(currentSyl);
+    pauseAfterSyl.push(false);
+  }
 
   if (syllables.length === 0) {
     alignmentData = [];
@@ -596,7 +670,8 @@ function smoothAlignment() {
   // 2. For each syllable, create sub-phases: onset → vowel
   const segments = [];
 
-  for (const rawSyl of syllables) {
+  for (let sylIdx = 0; sylIdx < syllables.length; sylIdx++) {
+    const rawSyl = syllables[sylIdx];
     // Gom digraph/trigraph trước khi phân tích
     const merged = mergeClusterTokens(rawSyl);
 
@@ -668,8 +743,22 @@ function smoothAlignment() {
           _lipId: vowelLipId,
         });
       }
+    } // end for syl of subSyllables
+
+    // Nếu sau syllable này có dấu câu (., !, ?) → chèn NEUTRAL segment (nghỉ)
+    if (pauseAfterSyl[sylIdx] && sylIdx + 1 < syllables.length) {
+      const lastSeg = segments[segments.length - 1];
+      const nextSylStart = syllables[sylIdx + 1][0].start;
+      if (lastSeg && nextSylStart > lastSeg.end) {
+        segments.push({
+          token: "",
+          start: lastSeg.end,
+          end: nextSylStart,
+          _lipId: NEUTRAL_LIP,
+        });
+      }
     }
-  }
+  } // end for sylIdx
 
   console.log(
     `Smoothed: ${alignmentData.length} tokens → ${segments.length} sub-segments (from ${syllables.length} syllables)`,
